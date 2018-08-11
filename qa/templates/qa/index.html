@@ -1,0 +1,71 @@
+<html>
+{% include '../bootcamp/navbar.html' %}
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-10"><h2>FAQ</h2></div>
+			<div class="col-lg-2">
+				<a href="{% url 'ask_ques' id %}"><button class="btn btn-primary btn-medium">Ask a question</button></a>
+			</div>
+			{% for ques in ques %}	
+			<div class="panel-group" id="accordion"> <div class="panel panel-default">
+				<div class="panel-heading"> 
+					<div class="panel-title">
+					<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{ ques.id }}">
+					Ques {{ques.id}} {{ ques.ques_text }}
+					</a> 
+					<p>Posted by: {{ ques.posted_by }}
+						Posted on date: {{ ques.pub_at }}</p>
+					</div>
+				</div>
+				<div id="collapseOne{{ ques.id }}" class="panel-collapse collapse in">
+					<div class="panel-body">
+						<a href="#myModal{{ques.id}}"  data-toggle="modal" data-target="#myModal{{ques.id}}">Add your Answer</a><br>
+						 <ul class="list-group">
+						{% for ans in ans %}
+						{% ifequal ans.ques_text ques %}
+						<li class="list-group-item">
+							<!-- {{ans.ques_text}} {{ques}}<br> -->
+						Ans. {{ ans.ans }}<br>
+						Posted by: {{ ans.post_by }}<br>
+						Posted on date: {{ ans.pubtime }}
+						</li>
+						{% endifequal %}
+						{% endfor %}
+						</ul>
+				    </div>
+				</div>
+
+				<form class="form-horizontal" method="post" action="{% url 'your_ans' id %}">
+					{% csrf_token %}
+					<div class="modal fade" id="myModal{{ques.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					   <div class="modal-dialog">
+					      <div class="modal-content">
+					         <div class="modal-header">
+					            <p class="modal-title" id="myModalLabel">
+					               Ques {{ques.id}} {{ ques.ques_text }}
+					               </p> </div>
+						         <div class="modal-body">
+						            <textarea class="form-control" name="ans"></textarea>
+						            <input type="hidden" name="ques" value="{{ ques.id }}">
+						         </div>
+						         <div class="modal-footer">
+					            <button type="button" class="btn btn-small"
+					               data-dismiss="modal">Close
+					            </button>
+					            <button type="submit" class="btn btn-primary btn-small">
+					               Submit answer
+					            </button>
+					         </div>
+					      </div>
+					</div>
+				</form>
+
+			</div>
+			<br>
+			{% endfor %}
+
+		</div>
+	</div>
+</body>
+</html>

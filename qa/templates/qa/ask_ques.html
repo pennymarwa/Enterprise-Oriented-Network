@@ -1,0 +1,22 @@
+<html>
+{% include '../bootcamp/navbar.html' %}
+
+<body>
+	<div class="container">
+		<div class="row">
+			<h4>Please feel free to ask any question {{ id }}</h4>	
+			<br><br><br>	
+		</div>
+		<form class="form-horizontal" method="post" action="{% url 'add_ques' id %}" role="form">
+			{% csrf_token %}
+		  <div class="row form-group">
+		    <div class="col-lg-2 control-label">Question</div>
+		    <div class="col-lg-10">
+		    	<textarea class="form-control" name="ques_text" placeholder="Type your Question Here!!"></textarea>
+		    </div>
+		  </div>
+		  <input type="submit" class="btn btn-primary" name="submit" value="submit">
+		</form>
+	</div>
+</body>
+</html>
